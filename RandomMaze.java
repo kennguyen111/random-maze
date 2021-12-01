@@ -73,23 +73,24 @@ public class RandomMaze {
 
     private static void makeMazeRecursive(char[][] level, int startX, int startY, int endX, int endY) {
         // base cases
-        if ((endX - startX) <=1 )  {
+        if ((endX - startX) <=2 )  {
             return;
         }
-        if ((endY - startY) <= 1)  {
+        if ((endY - startY) <=2)  {
             return;
         }
 
         // random new X and new y coordinates
-       int newY = randBetween(startY+1, endY-1 );
-       int newX  = randBetween(startX+1, endX-1 );
+       int newY = randBetween(startY+1, endY-1);
+       int newX  = randBetween(startX+1, endX-1);
 
         //create new column
         for (int i = startY; i <= endY; i++) {
             level[i][newX] = WALL;
         }
-        level[randBetween(startY, newY-1)][newX] = BLANK; //random hole from startY to newY (upper)
-        level[randBetween(newY-1, endY)][newX] = BLANK; //random hole from newY to endY (lower)
+        level[randBetween(startY, newY-1)][newX] = BLANK; //random hole from startY to newY with newX(upper)
+        level[randBetween(newY-1, endY)][newX] = BLANK; //random hole from newY to endY with newX(lower)
+        level[randBetween(startY, endY)][newX] = BLANK; //random hole from startY to endY with newX (anywhere from top to bottom)
 
         //create new row
         for (int j = startX; j <= endX; j++) {
@@ -97,6 +98,7 @@ public class RandomMaze {
         }
         level[newY][randBetween(startX, newX-1)] = BLANK; // random hole from startX to new X (Left)
         level[newY][randBetween(newX, endX)] = BLANK; // random hole from newX to endX (Right)
+        level[newY][randBetween(startX, endX)] = BLANK; // random hole from startX to endX with newY (anywhere from left to right)
 
 
         // call each sub-areas using recursion(total 4 areas)
@@ -117,7 +119,7 @@ public class RandomMaze {
         //get frame for random Maze
         char[][] randomMaze =createFrame();
         //make random maze
-        makeMazeRecursive(randomMaze,1,1,WIDTH-2, HEIGHT-2);
+        makeMazeRecursive(randomMaze,1,1,WIDTH-1, HEIGHT-1);
         return randomMaze;
     }
 
